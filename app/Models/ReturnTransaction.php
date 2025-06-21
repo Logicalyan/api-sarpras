@@ -18,4 +18,9 @@ class ReturnTransaction extends Model
     {
         return $this->hasMany(ReturnDetail::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

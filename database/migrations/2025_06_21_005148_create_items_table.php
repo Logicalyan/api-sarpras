@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->unique();
             $table->enum('type', ['reusable', 'consumable']);
+            $table->integer('stock');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
             $table->timestamps();

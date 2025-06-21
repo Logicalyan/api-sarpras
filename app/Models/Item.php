@@ -11,6 +11,7 @@ class Item extends Model
         'name',
         'code',
         'type',
+        'stock',
         'category_id',
         'warehouse_id',
     ];

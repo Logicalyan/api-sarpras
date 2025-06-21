@@ -10,7 +10,6 @@ class BorrowDetailUnit extends Model
 
     protected $fillable = [
         'borrow_transaction_id',
-        'item_id',
         'item_unit_id',
         'return_status',
         'returned_at',
@@ -19,11 +18,6 @@ class BorrowDetailUnit extends Model
     public function borrowTransaction()
     {
         return $this->belongsTo(BorrowTransaction::class);
-    }
-
-    public function item()
-    {
-        return $this->belongsTo(Item::class);
     }
 
     public function itemUnit()

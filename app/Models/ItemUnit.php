@@ -25,4 +25,9 @@ class ItemUnit extends Model
         return $this->hasMany(BorrowDetailUnit::class);
     }
 
+    public function returnDetails()
+    {
+        return $this->hasMany(ReturnDetail::class);
+    }
+
 }

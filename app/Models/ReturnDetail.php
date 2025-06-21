@@ -13,6 +13,11 @@ class ReturnDetail extends Model
         return $this->belongsTo(ReturnTransaction::class);
     }
 
+    public function itemUnit()
+    {
+        return $this->belongsTo(ItemUnit::class);
+    }
+
     public function borrowDetailUnit()
     {
         return $this->belongsTo(BorrowDetailUnit::class);

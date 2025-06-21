@@ -21,6 +21,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('items', App\Http\Controllers\ItemController::class);
         Route::apiResource('units', App\Http\Controllers\ItemUnitController::class);
         Route::apiResource('stocks', App\Http\Controllers\StockController::class);
+        Route::apiResource('borrows', App\Http\Controllers\BorrowTransactionController::class);
+        Route::apiResource('returns', App\Http\Controllers\ReturnTransactionController::class);
+        Route::post('borrow-approval/{id}/approve', [App\Http\Controllers\BorrowApprovalController::class, 'approve']);
+        Route::post('borrow-approval/{id}/reject', [App\Http\Controllers\BorrowApprovalController::class, 'reject']);
+        Route::post('return-approval/{id}/approve', [App\Http\Controllers\ReturnApprovalController::class, 'approve']);
+        Route::post('return-approval/{id}/reject', [App\Http\Controllers\ReturnApprovalController::class, 'reject']);
     });
 
     Route::group(['middleware' => 'role:borrower'], function () {
@@ -28,5 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('units', App\Http\Controllers\ItemUnitController::class)->except('store', 'update', 'destroy');
         Route::apiResource('categories', App\Http\Controllers\CategoryController::class)->except('store', 'update', 'destroy');
         Route::apiResource('warehouses', App\Http\Controllers\WarehouseController::class)->except('store', 'update', 'destroy');
+        Route::apiResource('stocks', App\Http\Controllers\StockController::class)->except('store', 'update', 'destroy');
+        Route::apiResource('borrows', App\Http\Controllers\BorrowTransactionController::class);
+        Route::apiResource('returns', App\Http\Controllers\ReturnTransactionController::class);
     });
 });

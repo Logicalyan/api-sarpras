@@ -16,7 +16,7 @@ class BorrowDetailConsumable extends Model
 
     public function borrowTransaction()
     {
-        return $this->belongsTo(BorrowTransaction::class, 'borrow_transaction_id');
+        return $this->belongsTo(BorrowTransaction::class);
     }
 
     public function item()

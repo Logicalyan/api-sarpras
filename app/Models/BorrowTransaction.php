@@ -26,13 +26,18 @@ class BorrowTransaction extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function borrowunits()
+    public function detailUnits()
     {
         return $this->hasMany(BorrowDetailUnit::class);
     }
 
+    public function detailConsumables()
+    {
+        return $this->hasMany(BorrowDetailConsumable::class);
+    }
+
     public function returnTransactions()
     {
-        return $this->hasOne(ReturnTransaction::class);
+        return $this->hasMany(ReturnTransaction::class);
     }
 }
