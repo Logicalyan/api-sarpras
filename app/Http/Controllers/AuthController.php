@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Custom\Format;
+use App\Custom\Format; // pastikan ini ditambahkan di atas
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +12,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+
         $credentials = $request->validate([
             'identifier' => 'required|string',
             'password' => 'required'
@@ -22,12 +23,14 @@ class AuthController extends Controller
             ->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            return Format::apiResponse(401, 'Invalid credentials');
+            return Format::apiResponse(401, 'Invalid credentials', null, ['error' => 'Invalid email/username or password']);
         }
 
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         return Format::apiResponse(200, 'Login successful', [
-            'token' => $user->createToken('auth_token')->plainTextToken,
-            'user' => $user
+            'token' => $token,
+            'user' => $user->load('profile')
         ]);
     }
 

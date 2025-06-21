@@ -2,64 +2,87 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Category;
+use App\Custom\Format;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return Format::apiResponse(200, 'List of categories', $categories);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category) {
+            return Format::apiResponse(404, 'Category not found');
+        }
+        return Format::apiResponse(200, 'Category detail', $category);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $category = Category::create($validated);
+            DB::commit();
+            return Format::apiResponse(201, 'Category created successfully', $category);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Format::apiResponse(500, 'Failed to create category', null, $e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category) {
+            return Format::apiResponse(404, 'Category not found');
+        }
+
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'description' => 'nullable|string'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $category->update($validated);
+            DB::commit();
+            return Format::apiResponse(200, 'Category updated successfully', $category);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Format::apiResponse(500, 'Failed to update category', null, $e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
+    public function destroy($id)
     {
-        //
-    }
+        $category = Category::find($id);
+        if (!$category) {
+            return Format::apiResponse(404, 'Category not found');
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Category $category)
-    {
-        //
-    }
+        DB::beginTransaction();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
+        try {
+            $category->delete();
+            DB::commit();
+            return Format::apiResponse(200, 'Category deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Format::apiResponse(500, 'Failed to delete category', null, $e->getMessage());
+        }
     }
 }

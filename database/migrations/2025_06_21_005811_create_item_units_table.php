@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
             $table->string('serial_number')->nullable();
             $table->enum('condition', ['good', 'damaged', 'lost'])->default('good');
-            $table->enum('status', ['tersedia', 'dipinjam', 'maintenance', 'unavailable'])->default('tersedia');
+            $table->enum('status', ['available', 'borrowed', 'maintenance', 'unavailable'])->default('available');
             $table->timestamps();
         });
     }
